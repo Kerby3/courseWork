@@ -106,11 +106,10 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 							  		console.log(err);//вывод ошибки
 							  	} else {
 							  		//console.log(results);
-							  		
-							  	res.render('indexRegistrationSuccess.hbs', {
-							  		successClient: client[0]
-								});
-							  }
+							  		res.render('indexRegistrationSuccess.hbs', {
+							  			successClient: client[0]
+									});
+							  	}
 							})
 							  	connection.end(function(err) {
 								if (err) {
@@ -167,7 +166,6 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 				if (err) {//проверка на ошибку
 					console.log(err);//вывод ошибки
 				} else {
-					console.log(`Welcome! ${client}`);
 					let tmp = 0;
 					for (let i = 0; i < results.length; i += 1) {
 						if (client[0] === results[i].EMAIL) {
@@ -228,9 +226,12 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 										} else {
 
 										}*/
+
+									console.log(`Welcome! ${client}`);
 									res.render('indexRegistrationSuccess.hbs', {
 										successClient: client[0]
 									});
+
 							}
 						})
 						/*connection.end(function(err) {
@@ -252,7 +253,7 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 			});
 		}
 	});
-	
+
 
 app.listen(PORT, function () {
 	console.log('API app started');

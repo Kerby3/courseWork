@@ -5,10 +5,35 @@
 	<meta charset="utf-8"/>
 </head>
 <body>
-	<form action="loginRegistration" method="post">
-		<input name = "click" class="login" type="submit" value="Войти\Регистрация">
-	</form>
-	<p class="client">Welcome, {{successClient}}!</p>
+	<div class="loginRegistrationDiv" style="
+		float: left;
+		">
+		<form action="loginRegistration" method="post">
+			<input name = "click" class="login" type="submit" value="Войти\Регистрация">
+		</form>
+	</div>
+	<div class="basketDiv" style="
+		float: right;
+		padding: 0;
+		margin: 0; ">
+		<form action="basketForm" method="post">
+			<input type="submit" class="basketButton" value="Посмотреть корзину">
+		</form>
+	</div>
+	<p class="client"> Welcome, {{successClient}}!</p>
+	<div class="categories">
+		<ul class="categoriesUl" style="
+		list-style: none;
+		padding: 0;
+		margin: 0; ">
+			<li class="mountainBikesLi" style="
+			padding: 0;
+			margin: 0;"><span class="mountainBikesSpan"><a href="mountainBikes">Горные велосипеды</a></span></li>
+			<li class="cityBikesLi" style="
+			padding: 0;
+			margin: 0; "><span class="cityBikesSpan"><a href="cityBikes">Городские велосипеды</a></span></li>
+		</ul>
+	</div>
 	<!--<form action="/avgSalaryInstitution" method="post">
 		<select name="institutionSelector" class="institutionSelect">
 			{{{options}}}
