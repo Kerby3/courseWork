@@ -255,6 +255,35 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 	});
 
 
+app.get('/cityBikes', (req, res) => {
+	let files = ['public/cityBikes.html', '/img/Десна Вояж Gent.jpg'];
+	fs.readFile(files[0], (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'text/html'});
+		res.write(data);
+		res.end();
+	});
+	/*fs.readFile(__dirname + files[1], (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'image/jpeg'});
+		res.end(data);
+	});*/
+	//console.log(req);
+});
+
+app.get('*', (req, res) => {
+	console.log(`get ${req.url}`);
+	if (req.url == '/img/desnaGent.jpg') {
+		fs.readFile('/img/desnaGent.jpg', (err, data) => {
+			res.writeHeader(200, {'Content-Type': 'image/jpeg'});
+			res.send(data);
+			//res.end(data);
+		});
+	}
+})
+
+app.post('*', (req, res) => {
+	console.log(`post ${req.url}`);
+})
+
 app.listen(PORT, function () {
 	console.log('API app started');
 })
