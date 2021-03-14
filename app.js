@@ -269,16 +269,75 @@ app.get('/cityBikes', (req, res) => {
 	//console.log(req);
 });
 
+app.get('/mountainBikes',urlencodedParser, (req, res) => {
+	let html = 'public/mountainBikes.html';
+	console.log(req.body)
+	fs.readFile(html, (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'text/html'});
+		//console.log(data);
+		res.write(data);
+		res.end();
+	});
+})
+
 app.get('*', (req, res) => {
-	console.log(`get ${req.url}`);
+	//console.log(`get ${req.url}`);
 	if (req.url == '/img/desnaGent.jpg') {
 		fs.readFile('/img/desnaGent.jpg', (err, data) => {
 			res.writeHeader(200, {'Content-Type': 'image/jpeg'});
 			res.send(data);
 			//res.end(data);
 		});
+	} else if (req.url == 'img/Forward.jpg') {
+		fs.readFile('img/Forward.jpg', (err, data) => {
+			res.writeHeader(200, {'Content-Type': 'image/jpeg'});
+			res.send(data);
+		})
 	}
 })
+
+app.post('/payment', (req, res) => {
+	console.log(req.body);
+	let html = 'public/payment.html';
+	fs.readFile(html, (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'text/html'});
+		res.write(data);
+		res.end();
+	});
+})
+
+app.post('/basket', urlencodedParser,  (req, res) => {
+	let html = 'public/basket.html';
+	/*let input = req.body.order;
+	input = input.split('Name=');
+	let order = [];
+	input = input.slice(1, input.length);
+	for (let i = 0; i < input.length; i += 1) {
+		input[i] = input[i].split('&Count=');	
+	}
+	for (let i = 0; i < input.length; i += 1) {
+		for (let j = 0; j < input[i].length; j += 1) {
+			if (j == 0) {
+				order.push(input[i][j]);
+				order.push('');
+			}
+		}
+	}
+	let counts = [];
+	for (let i = 0; i < input.length; i += 1) {
+		counts.push(input[i][1].slice(0, input[i][1].length - 1));
+	}
+	for (let i = 0; i < order.length / 2; i += 1) {
+		order[i * 2 + 1] = counts[i]
+	}
+	console.log(counts);
+	console.log(order);*/
+	fs.readFile(html, (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'text/html'});
+		res.write(data);
+		res.end();
+	});
+});
 
 app.post('*', (req, res) => {
 	console.log(`post ${req.url}`);

@@ -3,26 +3,27 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!--<link rel="stylesheet" href="public/cityBikes.css" type="text/css">-->
+	<link rel="stylesheet" href="cityBikes.css" type="text/css">
 	<title>Document</title>
 </head>
 <body>
+	<span class="toCategories"><a href="" class="toCategoriesA" onclick="javascript:history.back(); return false;">Вернуться в категорию</a></span>
+	<div class="basketDiv">
+		<form action="basket" method="POST">
+			<input type="hidden" name="order" class="order">
+			<input type="submit" class="basketButton" value="Посмотреть корзину">
+		</form>
+	</div>
 	<h2>Городские велосипеды</h2>
-	<div class="productsField" style="
-		width: 80%;
-		height: 100%;
-		position: relative;">
-		<div class="product desnaVoyagGent" style="
-			width: 80%;
-			height: 10%;">
-			<img src="../img/desnaGent.jpg" alt="" class="productPhoto" style="
-				width: 10%;
-				height: 10%;">
+	<div class="productField">
+		<div class="product desnaVoyagGent">
+			<img src="../img/desnaGent.jpg" alt="" class="productPhoto">
 			<span class="productName">Десна Вояж Gent</span>
-			<span class="productPrice">8100 Руб.</span>
-			<span class="productDescription">колеса 28" материал рамы: сталь количество скоростей: 1 пол: унисекс амортизация: Rigid (жесткий)</span>
-			<input type="submit" class="add" value="Добавить в корзину"> 
+			<span class="productPrice">8100 Руб.</span><br>
+			<span class="productDescription">колеса 28" материал рамы: сталь количество скоростей: 1 пол: унисекс амортизация: Rigid (жесткий)</span><br>
+			<input type="submit" class="addDesnaVoyagGent" value="Добавить в корзину"> 
 		</div>
 	</div>
+	<script src="cityBikes.js"></script>
 </body>
 </html>

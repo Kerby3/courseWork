@@ -3,35 +3,25 @@
 <head>
 	<title>Hello Node.js</title>
 	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="indexRegistrationSuccess.css" type="text/css">
 </head>
 <body>
-	<div class="loginRegistrationDiv" style="
-		float: left;
-		">
+	<div class="loginRegistrationDiv">
 		<form action="loginRegistration" method="post">
 			<input name = "click" class="login" type="submit" value="Войти\Регистрация">
 		</form>
 	</div>
-	<div class="basketDiv" style="
-		float: right;
-		padding: 0;
-		margin: 0; ">
-		<form action="basketForm" method="post">
+	<div class="basketDiv">
+		<form action="basket" method="post">
 			<input type="submit" class="basketButton" value="Посмотреть корзину">
+			<input type="hidden" class="order">
 		</form>
 	</div>
 	<p class="client"> Welcome, {{successClient}}!</p>
 	<div class="categories">
-		<ul class="categoriesUl" style="
-		list-style: none;
-		padding: 0;
-		margin: 0; ">
-			<li class="mountainBikesLi" style="
-			padding: 0;
-			margin: 0;"><span class="mountainBikesSpan"><a href="mountainBikes">Горные велосипеды</a></span></li>
-			<li class="cityBikesLi" style="
-			padding: 0;
-			margin: 0; "><span class="cityBikesSpan"><a href="cityBikes">Городские велосипеды</a></span></li>
+		<ul class="categoriesUl">
+			<li class="mountainBikesLi products"><span class="mountainBikesSpan"><a href="mountainBikes">Горные велосипеды</a></span></li>
+			<li class="cityBikesLi products"><span class="cityBikesSpan"><a href="cityBikes">Городские велосипеды</a></span></li>
 		</ul>
 	</div>
 	<!--<form action="/avgSalaryInstitution" method="post">
@@ -40,5 +30,6 @@
 		</select>
 		<input type="submit" value="Посмотреть" class="avgSalaryInstitutionButton">
 	</form>-->
+	<script src="indexRegistrationSuccess.js"></script>
 </body>
 </html>

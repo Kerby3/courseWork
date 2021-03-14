@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="mountainBikes.css" type="text/css">
+	<title>Document</title>
+</head>
+<body>
+	<span class="toCategories"><a href="" class="toCategoriesHref" onclick="javascript:history.back(); return false;">Вернуться в категорию</a></span>
+	<div class="basketDiv">
+		<form action="basket" method="post">
+			<input type="hidden" name="order" class="order">
+			<input type="submit" class="basketButton" value="Посмотреть корзину">
+		</form>
+	</div>
+	<h2>Горные велосипеды</h2>
+	<div class="productField">
+		<div class="product Forward">
+			<img src="../img/Forward.jpg" alt="" class="productPhoto">
+			<span class="productName">FORWARD Apache 27.5 3.0 Disc (2020)</span>
+			<span class="productPrice">21320 Руб.</span><br>
+			<span class="productDescription">колеса 27.5" материал рамы: алюминиевый сплав количество скоростей: 21 пол: унисекс амортизация: Hard tail, ход вилки 80 мм</span><br>
+			<input type="submit" class="addForward" value="Добавить в корзину"> 
+		</div>
+
+	</div>
+	<script src="mountainBikes.js"></script>
+</body>
+</html>
