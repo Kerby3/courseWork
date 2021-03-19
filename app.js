@@ -16,11 +16,12 @@ const PORT = 3306;// выбор порта для сервера
 
 
 
-app.get('/', function (req, res) { // если зашел на главную страницу по ссылке\
-	let options = '';
-	res.render('index.hbs', {
-
-	});
+app.get('/', function (req, res) {
+	fs.readFile('public/index.html', (err, data) => {
+		res.writeHeader(200, {'Content-Type': 'text/html'});
+		res.write(data);
+		res.end();
+	})
 });
 
 app.post('/loginRegistration', urlencodedParser, function (req, res) { //если нажал кнопку "Войти\Регистрация", то откроется файл loginForm.html
@@ -40,39 +41,31 @@ app.get('/registr', urlencodedParser, function (req, res) { //если пере�
 	});
 })
 
-app.post('/', urlencodedParser, function (req, res) { //если нажал на одну из кнопок форм, то кидает на главную
-		//console.log(req.body);
-		if (req.body.typeClient === 'login') { //проверка на тип пользователя логинится он или регистрируется
+app.post('/', urlencodedParser, function (req, res) { 
+		if (req.body.typeClient === 'login') { 
 			let hashedPassword = passwordHash.generate(req.body.password);
 			let client = [req.body.email];
 			let options = '';
-			const connection = mysql.createConnection({//соединение с БД
-			  host: "localhost", //хост
-			  user: "root",//пользователь
-			  database: "clientsCourseWork",//название БД
-			  password: "qwerty",//пароль к БД
-			  port: 3307//порт к БД
+			const connection = mysql.createConnection({
+			  host: "localhost", 
+			  user: "root",
+			  database: "clientsCourseWork",
+			  password: "qwerty",
+			  port: 3307
 			});
-			// тестирование подключения
-			  connection.connect(function(err){//соединение с БД
-			    if (err) {//проверка на ошибку
+			  connection.connect(function(err){
+			    if (err) {
 			      return console.error("Ошибка: " + err.message);//вывод ошибки
 			    }
 			    else{
-			      console.log("Подключение к серверу MySQL успешно установлено");//вывод успешного подключения к БД
+			      console.log("Подключение к серверу MySQL успешно установлено");
 			    }
 			 });
-
-
-			  
-
-
-			  connection.execute('SELECT * FROM clientsCourseWork WHERE EMAIL=(?)', client, function (err, results) { //выполнение SQL запроса на поиск клиента
-			  	if (err) {//проверка на ошибку
-			  		console.log(err);//вывод ошибки
+			  connection.execute('SELECT * FROM clientsCourseWork WHERE EMAIL=(?)', client, function (err, results) { 
+			  	if (err) {
+			  		console.log(err);
 			  	} else {
 			  		console.log(results.length);
-			  		//console.log(results);
 			  		if (results.length === 0) {
 
 			  			res.render('loginFormLose.hbs', {
@@ -84,30 +77,29 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 			  				if (passwordHash.verify(req.body.password, results[i].PASSWORD_FIELD) === true) {
 			  					console.log(`Welcome! ${client[0]}`);
 
-			  					const connection = mysql.createConnection({//соединение с БД
-								  host: "localhost", //хост
-								  user: "root",//пользователь
-								  database: "clientsCourseWork",//название БД
-								  password: "qwerty",//пароль к БД
-								  port: 3307//порт к БД
+			  					const connection = mysql.createConnection({
+								  host: "localhost", 
+								  user: "root",
+								  database: "clientsCourseWork",
+								  password: "qwerty",
+								  port: 3307
 								});
 
-								connection.connect(function(err){//соединение с БД
-							    if (err) {//проверка на ошибку
+								connection.connect(function(err){
+							    if (err) {
 							      return console.error("Ошибка: " + err.message);//вывод ошибки
 							    }
 							    else{
-							      console.log("Подключение к серверу MySQL успешно установлено");//вывод успешного подключения к БД
+							      console.log("Подключение к серверу MySQL успешно установлено");
 							    }
 							 });
 
-							  connection.execute('SELECT * FROM clientsCourseWork', function (err, results) { //выполнение SQL запроса на поиск клиента
-							  	if (err) {//проверка на ошибку
-							  		console.log(err);//вывод ошибки
+							  connection.execute('SELECT * FROM clientsCourseWork', function (err, results) { 
+							  	if (err) {
+							  		console.log(err);
 							  	} else {
-							  		//console.log(results);
 							  		res.render('indexRegistrationSuccess.hbs', {
-							  			successClient: client[0]
+							  			successClient: results[0].LOGIN
 									});
 							  	}
 							})
@@ -117,8 +109,6 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 								}
 								console.log("Подключение закрыто");
 							});
-
-
 			  					break;
 			  				} else {
 			  					if (i === results.length - 1) {
@@ -131,8 +121,7 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 			  			}
 			  		}
 			  	}
-			  });
-			 // закрытие подключения
+			  });			 
 			 connection.end(function(err) {
 			  if (err) {
 			    return console.log("Ошибка: " + err.message);
@@ -142,29 +131,27 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 		} else if (req.body.typeClient === 'register') {
 			console.log(req.body);
 			let options = [];
-			//console.log(hashedPassword.length);
 			let hashedPassword = passwordHash.generate(req.body.password);
-			let client = [req.body.email, hashedPassword]; //парсинг данных из форм
-			const connection = mysql.createConnection({//соединение с БД
+			let client = [req.body.email, req.body.login, hashedPassword]; 
+			const connection = mysql.createConnection({
 			  host: "localhost", //хост
-			  user: "root",//пользователь
-			  database: "clientscoursework",//название БД
-			  password: "qwerty",//пароль к БД
-			  port: 3307//порт к БД
-			});
-			// тестирование подключения
-			  connection.connect(function(err){//соединение с БД
-			    if (err) {//проверка на ошибку
-			      return console.error("Ошибка: " + err.message);//вывод ошибки
+			  user: "root",
+			  database: "clientscoursework",
+			  password: "qwerty",
+			  port: 3307
+			});			
+			  connection.connect(function(err){
+			    if (err) {
+			      return console.error("Ошибка: " + err.message);
 			    }
 			    else{
-			      console.log("Подключение к серверу MySQL успешно установлено");//вывод успешного подключения к БД
+			      console.log("Подключение к серверу MySQL успешно установлено");
 			    }
 			 });
 
-			  connection.execute('SELECT * FROM clientsCourseWork', function (err, results) { //выполнение SQL запроса на поиск клиента
-				if (err) {//проверка на ошибку
-					console.log(err);//вывод ошибки
+			  connection.execute('SELECT * FROM clientsCourseWork', function (err, results) { 
+				if (err) {
+					console.log(err);
 				} else {
 					let tmp = 0;
 					for (let i = 0; i < results.length; i += 1) {
@@ -181,70 +168,33 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 					} else {
 
 						const connection = mysql.createConnection({//соединение с БД
-						  host: "localhost", //хост
-						  user: "root",//пользователь
-						  database: "clientscoursework",//название БД
-						  password: "qwerty",//пароль к БД
-						  port: 3307//порт к БД
+						  host: "localhost",
+						  user: "root",
+						  database: "clientscoursework",
+						  password: "qwerty",
+						  port: 3307
 						});
-						// тестирование подключения
-						connection.connect(function(err){//соединение с БД
-						    if (err) {//проверка на ошибку
-						        return console.error("Ошибка: " + err.message);//вывод ошибки
+						connection.connect(function(err){
+						    if (err) {
+						        return console.error("Ошибка: " + err.message);
 						    } else {
-								console.log("Подключение к серверу MySQL успешно установлено");//вывод успешного подключения к БД
+								console.log("Подключение к серверу MySQL успешно установлено");
 							}
 						});
 
-						connection.execute("INSERT INTO clientsCourseWork (EMAIL, PASSWORD_FIELD) VALUES (?, ?)",client, function (err, results) { //выполнение SQL запроса на добавление клиента при регистрации
-						 	if (err) {//проверка на ошибку
-						  		console.log(err);//вывод ошибки
+						connection.execute("INSERT INTO clientsCourseWork (EMAIL, LOGIN, PASSWORD_FIELD) VALUES (?, ?, ?)",client, function (err, results) {
+						 	if (err) {
+						  		console.log(err);
 						  	} else {
-						  		/*const connection = mysql.createConnection({//соединение с БД
-									  host: "localhost", //хост
-									  user: "root",//пользователь
-									  database: "clientscoursework",//название БД
-									  password: "qwerty",//пароль к БД
-									  port: 3307//порт к БД
-								});
-
-								connection.connect(function(err){//соединение с БД
-								    if (err) {//проверка на ошибку
-								        return console.error("Ошибка: " + err.message);//вывод ошибки
-								    } else {
-										console.log("Подключение к серверу MySQL успешно установлено");//вывод успешного подключения к БД
-									}
-								});
-
-								connection.execute('SELECT * FROM clientscoursework', function (err, results) { //выполнение SQL запроса на поиск клиента
-								 	if (err) {//проверка на ошибку
-								  		console.log(err);//вывод ошибки
-								  	} else {
-								  		console.log(`Welcome! ${client[0]}`);
-										if (results.length === 1) {
-										 			
-										} else {
-
-										}*/
-
 									console.log(`Welcome! ${client}`);
 									res.render('indexRegistrationSuccess.hbs', {
-										successClient: client[0]
+										successClient: client[1]
 									});
-
 							}
 						})
-						/*connection.end(function(err) {
-							if (err) {
-						  	    return console.log("Ошибка: " + err.message);
-							} 
-							console.log("Подключение закрыто");
-						});*/
-
 					}
 				}
 			});
-			// закрытие подключения
 			connection.end(function(err) {
 			    if (err) {
 				    return console.log("Ошибка: " + err.message);
@@ -256,17 +206,12 @@ app.post('/', urlencodedParser, function (req, res) { //если нажал на
 
 
 app.get('/cityBikes', (req, res) => {
-	let files = ['public/cityBikes.html', '/img/Десна Вояж Gent.jpg'];
-	fs.readFile(files[0], (err, data) => {
+	let file = 'public/cityBikes.html';
+	fs.readFile(file, (err, data) => {
 		res.writeHeader(200, {'Content-Type': 'text/html'});
 		res.write(data);
 		res.end();
 	});
-	/*fs.readFile(__dirname + files[1], (err, data) => {
-		res.writeHeader(200, {'Content-Type': 'image/jpeg'});
-		res.end(data);
-	});*/
-	//console.log(req);
 });
 
 app.get('/mountainBikes',urlencodedParser, (req, res) => {
@@ -281,12 +226,10 @@ app.get('/mountainBikes',urlencodedParser, (req, res) => {
 })
 
 app.get('*', (req, res) => {
-	//console.log(`get ${req.url}`);
 	if (req.url == '/img/desnaGent.jpg') {
 		fs.readFile('/img/desnaGent.jpg', (err, data) => {
 			res.writeHeader(200, {'Content-Type': 'image/jpeg'});
 			res.send(data);
-			//res.end(data);
 		});
 	} else if (req.url == 'img/Forward.jpg') {
 		fs.readFile('img/Forward.jpg', (err, data) => {
@@ -308,30 +251,6 @@ app.post('/payment', (req, res) => {
 
 app.post('/basket', urlencodedParser,  (req, res) => {
 	let html = 'public/basket.html';
-	/*let input = req.body.order;
-	input = input.split('Name=');
-	let order = [];
-	input = input.slice(1, input.length);
-	for (let i = 0; i < input.length; i += 1) {
-		input[i] = input[i].split('&Count=');	
-	}
-	for (let i = 0; i < input.length; i += 1) {
-		for (let j = 0; j < input[i].length; j += 1) {
-			if (j == 0) {
-				order.push(input[i][j]);
-				order.push('');
-			}
-		}
-	}
-	let counts = [];
-	for (let i = 0; i < input.length; i += 1) {
-		counts.push(input[i][1].slice(0, input[i][1].length - 1));
-	}
-	for (let i = 0; i < order.length / 2; i += 1) {
-		order[i * 2 + 1] = counts[i]
-	}
-	console.log(counts);
-	console.log(order);*/
 	fs.readFile(html, (err, data) => {
 		res.writeHeader(200, {'Content-Type': 'text/html'});
 		res.write(data);

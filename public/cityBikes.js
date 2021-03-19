@@ -26,17 +26,10 @@ buttonDesnaVoyagGent.addEventListener('click', () => {
 
 basketButton.addEventListener('click', () => {
 	let output = '';
-	//const request = new XMLHttpRequest();
-	//const url = '/basket';
-
-	//location.href = 'http://localhost:3306/basket';
 	for (let i = 0; i < bicycles.length; i += 2) {
 		output += `Name=${bicycles[i]}&Count=${bicycles[i + 1]}`;
 		console.log(`bicycles.length = ${bicycles.length}\ni = ${i}`);
 	}
 	hidden.value = output;
-	console.log(hidden.value);
-	/*request.open('POST', url);
-	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	request.send(output);*/
+	console.log(hidden.value);\
 });

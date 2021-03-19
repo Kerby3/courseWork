@@ -3,23 +3,19 @@
 	height: 100%;
 	position: relative;
 }
-
 .product {
 	padding: 2.5% 5%;
 	width: 80%;
 	height: 10%;
 }
-
 .productPhoto {
 	float: left;
 	width: 10%;
 	height: 10%;
 }
-
 .productDescription {
 	padding: 0;
 }
-
 .basketDiv {
 	float: right;
 	padding: 0;
