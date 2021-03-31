@@ -130,7 +130,6 @@ app.post('/', urlencodedParser, function (req, res) {
 			});
 		} else if (req.body.typeClient === 'register') {
 			console.log(req.body);
-			let options = [];
 			let hashedPassword = passwordHash.generate(req.body.password);
 			let client = [req.body.email, req.body.login, hashedPassword]; 
 			const connection = mysql.createConnection({
